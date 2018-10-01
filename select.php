@@ -11,6 +11,27 @@
     background-color: #5e90e0;
 }
 </style>
+<script>
+function showUser(str) {
+    if (str == "") {
+        document.getElementById("showshow").innerHTML = "";
+        return;
+    } else 
+    { 
+        if (window.XMLHttpRequest) 
+        {   
+            xmlhttp = new XMLHttpRequest();
+        } 
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("showshow").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET","select.php?a="+str,true);
+        xmlhttp.send();
+    }
+}
+</script>
 </head>
 <br>
 <center>
@@ -39,11 +60,11 @@
 	
 	
 </table>
-<form method="post" action="select.php">
+<form >
 <input id="showTableBtn" class="form-control" style="width: 30%" type="text" name="fieldname" placeholder="Enter name to display data"><br>
-<button  class="btn btn-primary" type="submit" name="enter">Get details!</button>
+<button  class="btn btn-primary" type="submit" name="enter" onsubmit="showUser((#showTableBtn).value)">Get details!</button>
 
-
+<div id="showshow"></div>
 <table id="dataTable" class="table table-hover">
 	<tr>
 		<th>S.No</th>
@@ -52,7 +73,7 @@
 		<th>Mail</th>
 	</tr>
 	<?php
-	$a= $_POST['fieldname'];
+	$a= $_GET['fieldname'];
 	 $dispvar="SELECT * FROM details WHERE name='$a'";
 	$tempo=$db->query($dispvar);
 	while ($row = $tempo->fetch_assoc()) 
